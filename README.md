@@ -1,2 +1,90 @@
-# StarMovie
-StarMovie é um sistema completo fullstack para exibição e gerenciamento de filmes. O projeto inclui:  Front-end em JavaFX com carrossel de filmes e interface interativa;  Back-end responsável pelo fornecimento de dados e controle de usuários;  Banco de dados para armazenamento de informações dos filmes, favoritos, e histórico de visualização.
+# 🌟 StarMovie
+
+**StarMovie** é um sistema fullstack para exibição e gerenciamento de filmes, inspirado em plataformas como IMDb. Ele oferece uma interface moderna desenvolvida em **JavaFX**, integrando funcionalidades de **favoritos**, **filmes populares** e **busca** com um **carrossel interativo de imagens**.
+
+## 🧩 Funcionalidades
+
+- 🎬 Exibição de filmes com poster, título, descrição e avaliação
+- ⭐ Marcar filmes como favoritos
+- 🔥 Listar filmes populares da semana
+- 🔎 Barra de pesquisa para buscar títulos
+- 🎠 Carrossel de imagens para navegação dinâmica
+- 👤 Perfil do usuário e Watchlist
+- 🌐 Integração com back-end e banco de dados
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+| Camada        | Tecnologia                        |
+|---------------|-----------------------------------|
+| Front-end     | JavaFX                            |
+| Back-end      | Java (Spring Boot ou Jakarta EE)* |
+| Banco de Dados| PostgreSQL ou MySQL*              |
+| Versionamento | Git + GitHub                      |
+
+> \* O back-end e banco ainda podem ser ajustados conforme o andamento do projeto.
+
+---
+
+## 🚀 Como executar o projeto
+
+### 🔧 Requisitos
+
+- Java 17 ou superior
+- Maven ou Gradle
+- Git
+- PostgreSQL ou MySQL (dependendo da implementação)
+
+### 🧪 Passos iniciais
+
+```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/StarMovie.git
+cd StarMovie
+
+# Compile o projeto (se estiver usando Maven)
+mvn clean install
+
+# Execute a aplicação JavaFX
+mvn javafx:run
+```
+
+> Configure as variáveis de ambiente e banco de dados conforme necessário no `application.properties` ou `.env`.
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+StarMovie/
+│
+├── frontend/           # JavaFX interface
+├── backend/            # API de filmes
+├── database/           # Scripts SQL / modelo ER
+├── README.md
+└── .gitignore
+```
+
+---
+
+## 📌 TODOs
+
+- [ ] Conexão completa com API de filmes
+- [ ] Sistema de autenticação
+- [ ] Carregamento dinâmico dos carrosséis
+- [ ] Responsividade e estilização final
+
+---
+
+## 👨‍💻 Autor
+
+**Leonardo Freitas dos Santos**  
+📚 Eng. da Computação - UTFPR  
+📬 [linkedin.com/in/leonardofs](https://linkedin.com/in/leonardofs)
+
+---
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
