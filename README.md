@@ -19,8 +19,8 @@
 | Camada        | Tecnologia                        |
 |---------------|-----------------------------------|
 | Front-end     | JavaFX                            |
-| Back-end      | Java (Spring Boot ou Jakarta EE)* |
-| Banco de Dados| PostgreSQL ou MySQL*              |
+| Back-end      | Java                              |
+| Banco de Dados| MySQL                             |
 | Versionamento | Git + GitHub                      |
 
 > \* O back-end e banco ainda podem ser ajustados conforme o andamento do projeto.
