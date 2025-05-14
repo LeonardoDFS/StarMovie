@@ -1,6 +1,6 @@
 # 🌟 StarMovie
 
-**StarMovie** é um sistema fullstack para exibição e gerenciamento de filmes, inspirado em plataformas como IMDb. Ele oferece uma interface moderna desenvolvida em **JavaFX**, integrando funcionalidades de **favoritos**, **filmes populares** e **busca** com um **carrossel interativo de imagens**.
+**StarMovie** é um sistema fullstack para exibição e gerenciamento de filmes, inspirado em plataformas como IMDb. Ele oferece uma interface moderna desenvolvida em **SpringBoot**, integrando funcionalidades de **favoritos**, **filmes populares** e **busca** com um **carrossel interativo de imagens**.
 
 ## 🧩 Funcionalidades
 
@@ -18,7 +18,7 @@
 
 | Camada        | Tecnologia                        |
 |---------------|-----------------------------------|
-| Front-end     | JavaFX                            |
+| Front-end     | SpringBoot-WEB                    |
 | Back-end      | Java                              |
 | Banco de Dados| MySQL                             |
 | Versionamento | Git + GitHub                      |
