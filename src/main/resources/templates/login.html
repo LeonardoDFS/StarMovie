@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login - StarMovie</title>
+  <link rel="stylesheet" th:href="@{/css/login-style.css}">
+</head>
+<body>
+<div class="login-container">
+  <div class="logo-section">
+    <img th:src="@{/images/starmovie-logo.png}" alt="StarMovie Logo" class="logo-img"/>
+  </div>
+
+  <div class="form-section">
+    <div class="form-box">
+      <h2>LOGIN</h2>
+
+      <div th:if="${param.error}" class="error-message">
+        Usuário ou senha inválidos.
+      </div>
+      <div th:if="${param.logout}" class="success-message">
+        Você foi desconectado com sucesso.
+      </div>
+      <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+
+      <form th:action="@{/login}" method="post">
+        <div class="input-group">
+          <label for="username">Usuário</label>
+          <input type="text" id="username" name="username" required autofocus/>
+        </div>
+        <div class="input-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" name="password" required />
+        </div>
+        <button type="submit" class="login-button">LOGAR</button>
+      </form>
+      <p class="register-link">
+        Não tem uma conta? <a th:href="@{/register}">Registre-se</a>
+      </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

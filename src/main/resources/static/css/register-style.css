@@ -1,0 +1,141 @@
+/* Reset básico e Estilo do Body */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif; /* Escolha uma fonte adequada */
+    background-color: #000000; /* Fundo preto */
+    color: #000000; /* Cor de texto padrão (branco) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Garante que o corpo ocupe toda a altura */
+}
+
+/* Container principal que divide logo e formulário */
+.login-container {
+    display: flex;
+    width: 80%; /* Ajuste a largura conforme necessário */
+    min-width: 500px;
+    max-width: 900px; /* Limite máximo de largura */
+    align-items: center; /* Alinha verticalmente */
+    flex-wrap: nowrap;
+}
+
+/* Seção do Logo (Esquerda) */
+.logo-section {
+    flex: 1; /* Ocupa metade do espaço disponível */
+    display: flex;
+    flex-direction: column; /* Para alinhar texto abaixo da imagem se usar */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    max-width: 400px;
+}
+
+.logo-img {
+    max-width: 500px; /* Ajuste o tamanho do logo */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    right: 120px;
+    /* Adicione mais estilos para o logo se necessário */
+}
+
+/* Seção do Formulário (Direita) */
+.form-section {
+    flex: 1; /* Ocupa a outra metade */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Caixa cinza que contém o formulário */
+.form-box {
+    background-color: #ffffff; /* Cinza claro */
+    padding: 30px 40px; /* Espaçamento interno */
+    border-radius: 15px; /* Cantos arredondados */
+    width: 100%;
+    max-width: 350px; /* Largura máxima da caixa */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave opcional */
+    text-align: center; /* Centraliza o título e o botão */
+}
+
+.form-box h2 {
+    color: #333; /* Cor escura para o título LOGIN */
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.5em;
+}
+
+/* Grupo de Label + Input */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left; /* Alinha labels e inputs à esquerda */
+}
+
+.input-group label {
+    display: block; /* Faz o label ocupar uma linha */
+    color: #555; /* Cor cinza para os labels */
+    font-size: 0.85em;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%; /* Ocupa toda a largura disponível */
+    padding: 12px 15px; /* Espaçamento interno do input */
+    border: 1px solid #ccc; /* Borda sutil */
+    border-radius: 8px; /* Cantos arredondados do input */
+    box-sizing: border-box; /* Inclui padding e borda na largura total */
+    background-color: #ffffff; /* Fundo branco */
+    color: #333;
+    font-size: 1em;
+}
+
+/* Botão de Login */
+.login-button {
+    background-color: #000000; /* Fundo cinza escuro/preto */
+    color: #ffffff; /* Texto branco */
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px; /* Cantos arredondados */
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: uppercase; /* Texto em maiúsculas como na imagem */
+    margin-top: 10px; /* Espaço acima do botão */
+    transition: background-color 0.3s ease; /* Efeito suave no hover */
+}
+
+.login-button:hover {
+    background-color: #555555; /* Cor um pouco mais clara no hover */
+}
+
+/* Link para Registro */
+.register-link {
+    margin-top: 25px;
+    font-size: 0.9em;
+}
+
+.register-link a {
+    color: #007bff; /* Cor azul padrão para links, ajuste se necessário */
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Estilos para mensagens de erro/sucesso (opcional) */
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.success-message {
+    color: green;
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}

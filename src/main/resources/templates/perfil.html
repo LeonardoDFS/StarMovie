@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title>Meu Perfil - StarMovie</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" th:href="@{/css/home-style.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" ... />
+  <style>
+    /* ... (seus estilos de perfil, como .profile-container, .profile-header, .profile-section) ... */
+    /* Adicione estilos para .movie-preview-grid se necessário, similar a .search-results-grid */
+    .movie-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Posters menores */
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .movie-preview-grid .movie-item a { /* Para centralizar ou alinhar */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .movie-preview-grid .movie-poster {
+      width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+    .ver-tudo-link-perfil { /* Link "Ver tudo" específico para o perfil */
+      font-size: 0.9em;
+      color: #007bff;
+      text-decoration: none;
+    }
+    .ver-tudo-link-perfil:hover {
+      text-decoration: underline;
+    }
+    .profile-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid #333;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+    }
+    .profile-section-header h2 {
+      margin-bottom: 0; /* Remove margem do h2 para alinhar com o link */
+    }
+  </style>
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar}"></header>
+
+<main class="main-content profile-container">
+  <div class="profile-header" th:if="${usuario != null}">
+    <h1>Perfil de <span th:text="${usuario.username}">Nome do Usuário</span></h1>
+    <p th:text="${usuario.email}">email@example.com</p>
+  </div>
+
+  <section class="profile-section">
+    <div class="profile-section-header">
+      <h2><i class="fas fa-heart"></i> Meus Filmes Favoritos</h2>
+      <a th:href="@{/meus-favoritos}" class="ver-tudo-link-perfil"
+         th:if="${not #lists.isEmpty(listaFavoritos)}">Ver Todos &rarr;</a>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(listaFavoritos)}">
+      <div class="movie-preview-grid">
+        <div class="movie-item" th:each="filme, iterStat : ${listaFavoritos}" th:if="${iterStat.count <= 6}"> <a th:href="@{/filmes/{id}(id=${filme.id})}">
+          <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+               th:alt="${filme.nome}" class="movie-poster"/>
+        </a>
+        </div>
+      </div>
+    </div>
+    <div th:if="${#lists.isEmpty(listaFavoritos)}">
+      <p class="no-results-message" style="text-align: left;">Você ainda não adicionou nenhum filme à sua lista de favoritos.</p>
+    </div>
+  </section>
+
+  <section class="profile-section">
+    <div class="profile-section-header">
+      <h2><i class="fas fa-star"></i> Minhas Avaliações</h2>
+      <a th:href="@{/minhas-avaliacoes}" class="ver-tudo-link-perfil"
+         th:if="${not #lists.isEmpty(notasDoUsuario)}">Ver Todas &rarr;</a>
+    </div>
+    <div th:if="${not #lists.isEmpty(notasDoUsuario)}">
+      <ul style="list-style: none; padding-left: 0;">
+        <li th:each="notaFil, iterStat : ${notasDoUsuario}" th:if="${iterStat.count <= 3}" style="margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #333;">
+          <a th:href="@{/filmes/{id}(id=${notaFil.filme.id})}"
+             th:text="${notaFil.filme.nome}"
+             style="font-weight: bold; font-size: 1.1em; color: #fff;">Nome do Filme</a>
+          <div style="margin-top: 5px;">
+                            <span>Sua nota:
+                                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                    <i class="fa-star" th:classappend="${i <= notaFil.nota} ? 'fas active' : 'far'" style="color: gold; font-size: 0.9em;"></i>
+                                </th:block>
+                            </span>
+          </div>
+          <p th:if="${notaFil.comentario != null and !notaFil.comentario.isEmpty()}"
+             th:text="'Comentário: ' + ${notaFil.comentario}"
+             style="font-size: 0.9em; color: #ccc; margin-top: 5px;"></p>
+        </li>
+      </ul>
+    </div>
+    <div th:if="${#lists.isEmpty(notasDoUsuario)}">
+      <p class="no-results-message" style="text-align: left;">Você ainda não avaliou nenhum filme.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>

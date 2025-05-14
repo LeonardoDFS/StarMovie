@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Meus Favoritos - StarMovie</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/home-style.css}"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Estilos específicos para paginação (pode ir para o CSS principal) */
+        .pagination-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            gap: 10px; /* Espaço entre os botões/links */
+        }
+        .pagination-controls a, .pagination-controls span {
+            color: #ccc;
+            padding: 8px 12px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .pagination-controls a:hover {
+            background-color: #555;
+            color: #fff;
+        }
+        .pagination-controls .active {
+            background-color: #e5e5e5;
+            color: #141414;
+            border-color: #e5e5e5;
+            font-weight: bold;
+        }
+        .pagination-controls .disabled {
+            color: #666;
+            border-color: #444;
+            cursor: not-allowed;
+        }
+        .sort-link {
+            margin: 0 10px;
+            color: #aaa;
+        }
+        .sort-link.active {
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<header th:replace="~{fragments/navbar :: navbar}"></header> <main class="main-content">
+
+    <h1>Catálogo de Filmes</h1>
+
+    <div style="margin-bottom: 20px; text-align: center;">
+        Ordenar por:
+        <a th:href="@{/meus-favoritos(size=${pageSize ?: 20}, sortField='nome', sortDir=${sortField == 'nome' ? reverseSortDir : 'asc'})}"
+           class="sort-link" th:classappend="${sortField == 'nome'} ? 'active'">Nome</a> |
+        <a th:href="@{/meus-favoritos(size=${pageSize ?: 20}, sortField='ano', sortDir=${sortField == 'ano' ? reverseSortDir : 'asc'})}"
+           class="sort-link" th:classappend="${sortField == 'ano'} ? 'active'">Ano</a> |
+        <a th:href="@{/meus-favoritos(size=${pageSize ?: 20}, sortField='popularidade', sortDir=${sortField == 'popularidade' ? reverseSortDir : 'desc'})}"
+           class="sort-link" th:classappend="${sortField == 'popularidade'} ? 'active'">Popularidade</a>
+    </div>
+
+
+    <div th:if="${not #lists.isEmpty(listFilmes)}">
+        <div class="search-results-grid">
+            <div class="movie-item" th:each="filme : ${listFilmes}">
+                <a th:href="@{/meus-favoritos/{id}(id=${filme.id})}"> <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+                                                                   th:alt="${filme.nome}" class="movie-poster"/>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(listFilmes)}">
+        <p class="no-results-message">Nenhum filme encontrado no catálogo.</p>
+    </div>
+
+    <div th:if="${totalPages > 1}" class="pagination-controls">
+
+        <a th:if="${currentPage > 1}" th:href="@{/meus-favoritos(pageNo=1, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir})}">Primeira</a>
+        <span th:unless="${currentPage > 1}" class="disabled">Primeira</span>
+
+        <a th:if="${currentPage > 1}" th:href="@{/meus-favoritos(pageNo=${currentPage - 1}, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir})}">Anterior</a>
+        <span th:unless="${currentPage > 1}" class="disabled">Anterior</span>
+
+        <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
+            <a th:if="${i >= currentPage - 2 and i <= currentPage + 2}"
+               th:href="@{/meus-favoritos(pageNo=${i}, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir})}"
+               th:classappend="${i == currentPage} ? 'active'"
+               th:text="${i}"></a>
+            <span th:if="${i == currentPage - 3 and i > 1}">...</span>
+            <span th:if="${i == currentPage + 3 and i < totalPages}">...</span>
+        </th:block>
+
+        <a th:if="${currentPage < totalPages}" th:href="@{/meus-favoritos(pageNo=${currentPage + 1}, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir})}">Próxima</a>
+        <span th:unless="${currentPage < totalPages}" class="disabled">Próxima</span>
+
+        <a th:if="${currentPage < totalPages}" th:href="@{/meus-favoritos(pageNo=${totalPages}, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir})}">Última</a>
+        <span th:unless="${currentPage < totalPages}" class="disabled">Última</span>
+    </div>
+
+</main>
+
+</body>
+</html>

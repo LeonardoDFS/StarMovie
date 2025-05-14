@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Minhas Avaliações - StarMovie</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/home-style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" ... />
+    <style>
+        .avaliacao-item {
+            background-color: #222;
+            padding: 15px;
+            margin-bottom:15px;
+            border-radius: 5px;
+        }
+        .avaliacao-item a { font-weight: bold; font-size: 1.2em; color: #fff; }
+        .avaliacao-item .stars { margin-top: 5px; margin-bottom: 5px; }
+        .avaliacao-item .stars .fa-star { color: gold; font-size: 1em; }
+        .avaliacao-item .comentario { font-size: 0.95em; color: #ccc; margin-top: 8px; }
+    </style>
+</head>
+<body>
+<header th:replace="~{fragments/navbar :: navbar}"></header>
+<main class="main-content">
+    <h1>Minhas Avaliações</h1>
+
+    <div class="filter-sort-controls" style="margin-bottom: 20px; text-align: center;">
+        Ordenar por:
+        <a th:href="@{${baseUrl}(pageNo=${currentPage ?: 1}, size=${pageSize ?: 10}, sortField='nota', sortDir=${sortField == 'nota' ? reverseSortDir : 'desc'})}"
+           class="sort-link" th:classappend="${sortField == 'nota'} ? 'active'">Nota</a>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(listAvaliacoes)}">
+        <div class="avaliacoes-list">
+            <div class="avaliacao-item" th:each="notaFil : ${listAvaliacoes}">
+                <a th:href="@{/filmes/{id}(id=${notaFil.filme.id})}" th:text="${notaFil.filme.nome}">Nome do Filme</a>
+                <div class="stars">
+                    <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                        <i class="fa-star" th:classappend="${i <= notaFil.nota} ? 'fas' : 'far'"></i>
+                    </th:block>
+                </div>
+                <p class="comentario" th:if="${notaFil.comentario != null and !notaFil.comentario.isEmpty()}"
+                   th:text="${notaFil.comentario}"></p>
+            </div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(listAvaliacoes)}">
+        <p class="no-results-message">Você ainda não avaliou nenhum filme.</p>
+    </div>
+
+    <div th:if="${totalPages > 1}" class="pagination-controls">
+        <a th:if="${currentPage > 1}" th:href="@{${baseUrl}(pageNo=1, size=${pageSize ?: 10}, sortField=${sortField}, sortDir=${sortDir})}">Primeira</a>
+        <span th:unless="${currentPage > 1}" class="disabled">Primeira</span>
+        <a th:if="${currentPage > 1}" th:href="@{${baseUrl}(pageNo=${currentPage - 1}, size=${pageSize ?: 10}, sortField=${sortField}, sortDir=${sortDir})}">Anterior</a>
+        <span th:unless="${currentPage > 1}" class="disabled">Anterior</span>
+        <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
+            <a th:if="${i == 1 || i == totalPages || (i >= currentPage - 2 && i <= currentPage + 2)}"
+               th:href="@{${baseUrl}(pageNo=${i}, size=${pageSize ?: 10}, sortField=${sortField}, sortDir=${sortDir})}"
+               th:classappend="${i == currentPage} ? 'active'" th:text="${i}"></a>
+            <span th:if="${i == 1 && currentPage - 2 > 2}">...</span>
+            <span th:if="${i == totalPages -1 && currentPage + 2 < totalPages -1}">...</span>
+        </th:block>
+        <a th:if="${currentPage < totalPages}" th:href="@{${baseUrl}(pageNo=${currentPage + 1}, size=${pageSize ?: 10}, sortField=${sortField}, sortDir=${sortDir})}">Próxima</a>
+        <span th:unless="${currentPage < totalPages}" class="disabled">Próxima</span>
+        <a th:if="${currentPage < totalPages}" th:href="@{${baseUrl}(pageNo=${totalPages}, size=${pageSize ?: 10}, sortField=${sortField}, sortDir=${sortDir})}">Última</a>
+        <span th:unless="${currentPage < totalPages}" class="disabled">Última</span>
+    </div>
+</main>
+</body>
+</html>

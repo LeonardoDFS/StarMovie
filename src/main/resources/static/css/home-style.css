@@ -1,0 +1,719 @@
+/* Reset básico e Estilo do Body */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    background-color: #141414; /* Fundo escuro */
+    color: #e5e5e5; /* Cor de texto clara */
+    display: flex; /* Usado para centralizar login, talvez remover para home? Ou manter? */
+    /* Se remover display:flex abaixo, descomente a linha de padding-top */
+    /* padding-top: 70px; */ /* Espaço para a top bar fixa SE body não for flex */
+    min-height: 100vh;
+
+    /* Se quiser que o CONTEÚDO da home não seja centralizado pelo body flex: */
+    flex-direction: column; /* Faz o body alinhar filhos verticalmente */
+    justify-content: flex-start; /* Remove centralização horizontal do body */
+    align-items: stretch; /* Remove centralização vertical do body */
+
+}
+
+a {
+    color: #e5e5e5;
+    text-decoration: none;
+}
+a:hover {
+    color: #ffffff;
+}
+
+/* ==================== Top Bar / Navbar ==================== */
+.top-bar {
+    /* position: fixed; */ /* Removido 'fixed' por enquanto, simplifica o layout inicial */
+    /* Se voltar a usar 'fixed', ajuste o padding-top do body */
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #000000; /* Fundo preto */
+    z-index: 1000;
+    height: 70px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    /* Adiciona padding interno para o conteúdo não colar nas bordas */
+    padding: 0 5%; /* Usa porcentagem para responsividade */
+    box-sizing: border-box; /* Garante que padding não aumente a largura total */
+
+    /* Centraliza o conteúdo da barra */
+    display: flex;
+    justify-content: center; /* Centraliza .top-bar-content horizontalmente */
+    align-items: center;
+}
+
+.top-bar-content {
+    width: 100%; /* Ocupa o espaço do padding */
+    max-width: 1200px; /* Limite máximo */
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.logo-area {
+    margin-right: 30px;
+}
+
+.navbar-logo {
+    height: 100px; /* *** AUMENTADO O TAMANHO DO LOGO *** */
+    width: auto;
+    vertical-align: middle; /* Ajuda no alinhamento */
+}
+
+.search-area {
+    flex-grow: 1;
+    margin-right: 30px;
+    max-width: 400px;
+}
+
+.search-form {
+    display: flex;
+    background-color: #333;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    font-size: 0.9em;
+}
+.search-input:focus {
+    outline: none;
+}
+
+.search-button {
+    background-color: #555;
+    border: none;
+    color: #fff;
+    padding: 0 12px;
+    cursor: pointer;
+}
+.search-button i {
+    font-size: 1em;
+}
+
+.navigation-area ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navigation-area li {
+    margin-left: 120px; /* Aumenta espaço entre links */
+}
+
+.navigation-area a, .logout-button {
+    color: #e5e5e5;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+.logout-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: inherit; /* Garante mesmo tamanho */
+    font-weight: inherit;
+    text-transform: inherit;
+    color: inherit;
+    font-family: inherit;
+}
+
+/* ==================== Conteúdo Principal ==================== */
+.main-content {
+    width: 100%; /* Ocupa a largura disponível */
+    max-width: 1200px; /* Limita a largura máxima */
+    margin: 40px auto; /* Centraliza e dá espaço do topo/baixo */
+    padding: 0 5%; /* Adiciona padding lateral igual ao da navbar */
+    box-sizing: border-box;
+}
+
+
+/* ==================== Carrossel Principal ==================== */
+.main-carousel-container {
+    width: 100%;
+    height: 50vh; /* Altura pode ser ajustada */
+    min-height: 350px; /* Altura mínima */
+    margin-bottom: 60px; /* *** AUMENTADO ESPAÇO ABAIXO *** */
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative; /* Necessário para os botões Swiper */
+}
+
+.main-carousel-slide {
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+    display: flex;
+    align-items: flex-end; /* Garanta que esta linha está ATIVA */
+}
+.main-carousel-slide a.slide-link-wrapper {
+    display: block; /* Faz o link ocupar o espaço do conteúdo */
+    text-decoration: none; /* Remove sublinhado */
+    color: inherit; /* Mantém a cor do texto original */
+    width: 100%; /* Opcional: Garante largura total se necessário */
+    height: 100%;/* Opcional: Garante altura total se necessário */
+}
+.main-carousel-slide::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70%; /* Gradiente mais alto */
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0));
+}
+
+.slide-content {
+    position: absolute;
+    bottom: 15%;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end; /* Garanta que esta linha está ATIVA */
+    padding: 1% 5%;        /* Mantemos um padding geral */
+    width: 100%;
+    box-sizing: border-box;
+
+    /*min-height: 220px;*/
+}
+
+.slide-poster {
+    flex-shrink: 0;
+    max-height: 180px;
+    width: auto;
+    max-width: 120px;
+    border-radius: 5px;
+    margin-right: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.slide-info {
+    flex-grow: 1;
+}
+
+.slide-info h2 {
+    margin: 0 0 10px 0;
+    font-size: clamp(1.5em, 4vw, 2.5em); /* Fonte responsiva */
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}
+.slide-info p {
+    margin: 0;
+    font-size: clamp(0.9em, 2vw, 1.1em); /* Fonte responsiva */
+    color: #e0e0e0;
+    max-width: 70%; /* Aumentado limite */
+    line-height: 1.4;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Estilo botões Swiper Principal */
+.main-nav-prev, .main-nav-next {
+    color: #e0e0e0 !important;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    width: 40px !important;
+    height: 40px !important;
+    transition: background-color 0.3s ease;
+}
+.main-nav-prev:hover, .main-nav-next:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+.main-nav-prev::after, .main-nav-next::after {
+    font-size: 18px !important; /* Tamanho da seta */
+    font-weight: bold;
+}
+
+
+/* ==================== Carrosséis de Filmes (Populares/Favoritos) ==================== */
+.movie-carousel-section {
+    margin-top: 40px; /* *** ADICIONADO ESPAÇO ACIMA *** */
+    margin-bottom: 60px; /* *** AUMENTADO ESPAÇO ABAIXO *** */
+}
+.movie-carousel-section h2 {
+    font-size: 1.6em; /* Aumenta título */
+    margin-bottom: 5px;
+    color: #fff;
+}
+.section-subtitle {
+    font-size: 1em; /* Aumenta subtítulo */
+    color: #b0b0b0; /* Cinza mais claro */
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* Adiciona um pouco de padding para os botões não colarem nas bordas */
+.popular-carousel-container, .favorites-carousel-container {
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 45px; /* Aumenta padding lateral para dar espaço às setas */
+    position: relative; /* Necessário para botões posicionados absolutamente */
+    box-sizing: border-box;
+}
+
+.movie-item-slide {
+    text-align: center;
+    /* Adiciona transição suave */
+    transition: transform 0.3s ease;
+}
+.movie-item-slide:hover {
+    transform: scale(1.03); /* Efeito de zoom menor */
+    z-index: 10; /* Traz para frente no hover */
+}
+
+
+.movie-poster {
+    width: 100%; /* Ocupa 100% do slide */
+    height: auto;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+}
+
+
+/* Estilo botões Swiper Populares/Favoritos */
+/* Posiciona os botões fora do container principal dos slides */
+.popular-nav-prev, .fav-nav-prev {
+    left: 5px !important; /* Posição da seta esquerda */
+}
+.popular-nav-next, .fav-nav-next {
+    right: 5px !important; /* Posição da seta direita */
+}
+
+.popular-nav-prev, .popular-nav-next, .fav-nav-prev, .fav-nav-next {
+    color: #e0e0e0 !important;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    width: 35px !important;
+    height: 35px !important;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    top: 50% !important; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajuste fino vertical */
+
+    /* Esconde por padrão, mostra no hover da seção */
+    opacity: 0;
+}
+
+.popular-nav-prev::after, .popular-nav-next::after, .fav-nav-prev::after, .fav-nav-next::after {
+    font-size: 16px !important;
+    font-weight: bold;
+}
+
+.movie-carousel-section:hover .popular-nav-prev,
+.movie-carousel-section:hover .popular-nav-next,
+.movie-carousel-section:hover .fav-nav-prev,
+.movie-carousel-section:hover .fav-nav-next {
+    opacity: 1; /* Mostra setas no hover */
+}
+
+.popular-nav-prev:hover, .popular-nav-next:hover, .fav-nav-prev:hover, .fav-nav-next:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* ==================== Página de Resultados da Busca ==================== */
+
+.search-title {
+    color: #fff;
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #444; /* Linha separadora opcional */
+    padding-bottom: 10px;
+}
+
+.search-title span {
+    font-style: italic; /* Destaca o termo buscado */
+}
+
+.search-results-grid {
+    display: grid;
+    /* Cria colunas responsivas:
+       - Tenta preencher com colunas de no mínimo 160px.
+       - Cada coluna ocupa uma fração igual do espaço (1fr).
+       - Adapta o número de colunas à largura da tela. */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 25px; /* Espaço entre os itens da grade */
+    margin-top: 20px;
+}
+
+.search-results-grid .movie-item a {
+    display: block; /* Garante que o link ocupe o espaço */
+    text-align: center; /* Centraliza o título se adicionado */
+    transition: transform 0.2s ease-in-out; /* Efeito suave */
+}
+.search-results-grid .movie-item a:hover {
+    transform: scale(1.04); /* Leve aumento no hover */
+}
+
+
+/* Reutiliza a classe .movie-poster, mas garante que ela se adapte à grade */
+.search-results-grid .movie-poster {
+    width: 100%; /* Faz a imagem ocupar toda a largura do item da grade */
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Sombra um pouco mais forte */
+}
+
+/* Estilo opcional para título abaixo do poster na grade */
+.movie-title-grid {
+    color: #ccc;
+    font-size: 0.9em;
+    margin-top: 8px;
+    /* Evita que títulos muito longos quebrem o layout */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-results-message {
+    color: #aaa;
+    font-size: 1.1em;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.no-results-message span {
+    font-style: italic;
+    font-weight: bold;
+}
+
+/* ==================== Página de Resultados da Busca ==================== */
+
+.search-title {
+    color: #fff;
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #444; /* Linha separadora opcional */
+    padding-bottom: 10px;
+}
+
+.search-title span {
+    font-style: italic; /* Destaca o termo buscado */
+}
+
+.search-results-grid {
+    display: grid;
+    /* Cria colunas responsivas:
+       - Tenta preencher com colunas de no mínimo 160px.
+       - Cada coluna ocupa uma fração igual do espaço (1fr).
+       - Adapta o número de colunas à largura da tela. */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 25px; /* Espaço entre os itens da grade */
+    margin-top: 20px;
+}
+
+.search-results-grid .movie-item a {
+    display: block; /* Garante que o link ocupe o espaço */
+    text-align: center; /* Centraliza o título se adicionado */
+    transition: transform 0.2s ease-in-out; /* Efeito suave */
+}
+.search-results-grid .movie-item a:hover {
+    transform: scale(1.04); /* Leve aumento no hover */
+}
+
+
+/* Reutiliza a classe .movie-poster, mas garante que ela se adapte à grade */
+.search-results-grid .movie-poster {
+    width: 100%; /* Faz a imagem ocupar toda a largura do item da grade */
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Sombra um pouco mais forte */
+}
+
+/* Estilo opcional para título abaixo do poster na grade */
+.movie-title-grid {
+    color: #ccc;
+    font-size: 0.9em;
+    margin-top: 8px;
+    /* Evita que títulos muito longos quebrem o layout */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.no-results-message {
+    color: #aaa;
+    font-size: 1.1em;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.no-results-message span {
+    font-style: italic;
+    font-weight: bold;
+}
+
+/* ==================== PÁGINA DE DETALHES DO FILME ==================== */
+
+.detail-backdrop {
+    height: 60vh;
+    background-size: cover;
+    background-position: center 30%;
+    position: relative;
+}
+.detail-backdrop::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(20,20,20,1) 20%, rgba(20,20,20,0.8) 60%, rgba(20,20,20,0.4) 100%);
+}
+.detail-content-overlay {
+    display: flex;
+    align-items: flex-start;
+    max-width: 1200px;
+    margin: -200px auto 40px auto;
+    padding: 0 5%;
+    position: relative;
+    z-index: 10;
+    gap: 40px;
+}
+.detail-poster {
+    flex-shrink: 0;
+}
+.detail-poster img {
+    width: 300px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.7);
+}
+.detail-info {
+    padding-top: 40px;
+    color: #fff;
+    flex-grow: 1;
+}
+.title-year h1 {
+    font-size: 3em;
+    margin: 0;
+    line-height: 1.1;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+    display: inline;
+}
+.title-year .year {
+    font-size: 1.8em;
+    color: #bbb;
+    margin-left: 15px;
+    font-weight: 300;
+}
+.metadata-line {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 20px; /* Garante altura mesmo se vazio */
+}
+.metadata-line .rating-icon {
+    border: 1px solid #ccc;
+    padding: 2px 5px;
+    font-size: 0.8em;
+    border-radius: 3px;
+}
+
+.genre-tags {
+    margin-top: 20px;
+}
+.genre-tags span {
+    background-color: rgba(100, 100, 100, 0.4);
+    border: none;
+    padding: 5px 12px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    display: inline-block;
+    color: #e0e0e0;
+}
+
+.user-interactions {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+.fav-button {
+    background-color: rgba(100, 100, 100, 0.5);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+.fav-button:hover {
+    background-color: rgba(150, 150, 150, 0.6);
+}
+.fav-button.is-favorite {
+    background-color: #e50914;
+}
+.fav-button i { margin-right: 8px; }
+
+.rating-stars {
+    color: #ccc;
+    font-size: 1.8em;
+    cursor: pointer;
+}
+.rating-stars .fa-star.active { color: gold; }
+.rating-stars .fa-star:hover { color: lightgoldenrodyellow;}
+
+
+.detail-section { margin-top: 35px; }
+.detail-section h3 {
+    font-size: 1.5em;
+    color: #eee;
+    border-bottom: 1px solid #555;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+.detail-section p {
+    font-size: 1.05em;
+    line-height: 1.7;
+    color: #ccc;
+}
+
+/* Em home-style.css */
+.rating-stars {
+    color: #ccc; /* Cor das estrelas não selecionadas/vazias */
+    font-size: 1.8em;
+    cursor: pointer; /* Indica que são clicáveis */
+}
+.rating-stars .fa-star.active {
+    color: gold; /* Cor das estrelas selecionadas/ativas */
+}
+/* Opcional: Efeito hover direto no CSS (alternativa ao JS setting color) */
+/* .rating-stars .fa-star:hover {
+     color: lightgoldenrodyellow;
+   } */
+
+.ver-tudo-link {
+    font-size: 0.9em;
+    color: #007bff; /* Cor de link ou outra que preferir */
+    text-decoration: none;
+}
+.ver-tudo-link:hover {
+    text-decoration: underline;
+}
+
+
+/* ==================== PAGINAÇÃO ==================== */
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    gap: 8px; /* Espaço entre os botões/links */
+    flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+}
+
+.pagination-controls a,
+.pagination-controls span { /* span é usado para "Primeira/Anterior" desabilitados */
+    color: #ccc;
+    padding: 8px 15px; /* Aumenta padding lateral */
+    border: 1px solid #555;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.9em;
+}
+
+.pagination-controls a:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+.pagination-controls .active { /* Para a página atual */
+    background-color: #e5d309; /* Cor de destaque, ex: vermelho Netflix */
+    color: #000000;
+    border-color: #e5d309;
+    font-weight: bold;
+    cursor: default;
+}
+
+.pagination-controls .disabled { /* Para "Primeira/Anterior" quando desabilitados */
+    color: #666;
+    border-color: #444;
+    cursor: not-allowed;
+    background-color: #222; /* Fundo um pouco diferente para indicar desabilitado */
+}
+
+.pagination-controls span { /* Estilo geral para spans (incluindo reticências) */
+    color: #aaa;
+}
+
+
+/* ==================== LINKS DE ORDENAÇÃO ==================== */
+/* O container .sort-group e o .filter-group já têm estilos inline no HTML,
+   mas você pode criar classes para eles no CSS para um código mais limpo. */
+
+.filter-sort-controls {
+    /* Os estilos inline que você colocou no HTML:
+    margin-bottom: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    */
+    /* Você pode mover esses estilos para cá, criando a classe no CSS */
+    /* Exemplo: */
+    /* margin-bottom: 30px; */
+    /* text-align: center; */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* gap: 20px; */
+    /* flex-wrap: wrap; */
+}
+
+.filter-group label, .sort-group span {
+    color: #ccc;
+    margin-right: 5px;
+}
+
+.filter-group select {
+    /* Os estilos inline que você colocou no HTML:
+    padding: 8px 10px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #eee;
+    */
+    /* Você pode mover esses estilos para cá */
+}
+
+.sort-link {
+    margin: 0 8px; /* Ajusta o espaçamento entre os links de ordenação */
+    color: #aaa;
+    text-decoration: none;
+    padding: 5px 0; /* Adiciona um pouco de padding vertical */
+    transition: color 0.2s;
+}
+
+.sort-link:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.sort-link.active { /* Para o link de ordenação ativo */
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: #e5d309; /* Exemplo de destaque */
+    text-underline-offset: 3px; /* Afasta um pouco o sublinhado */
+}
+
+/* (Final do arquivo home-style.css) */

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>StarMovie - Home</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/home-style.css}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<header th:replace="~{fragments/navbar :: navbar}"></header>
+
+
+<main class="main-content">
+
+    <section class="main-carousel-container swiper-container">
+        <div class="swiper-wrapper">
+            <div th:each="filme : ${filmesCarrosselPrincipal}" class="swiper-slide main-carousel-slide"
+                 th:style="${filme.caminhoFundo != null ? 'background-image: url(https://image.tmdb.org/t/p/original' + filme.caminhoFundo + ');' : 'background-image: url(/images/placeholder-background.jpg);'}">
+                <a th:href="@{/filmes/{id}(id=${filme.id})}" class="slide-link-wrapper">
+                    <div class="slide-content">
+                        <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+                             alt="Poster" class="slide-poster"/>
+                        <div class="slide-info">
+                            <h2 th:text="${filme.nome}">Título do Filme</h2>
+                            <p th:text="${#strings.abbreviate(filme.sinopse, 150)}">Breve descrição...</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="swiper-button-next main-nav-next"></div>
+        <div class="swiper-button-prev main-nav-prev"></div>
+    </section>
+
+    <section class="movie-carousel-section">
+        <h2>Populares</h2>
+        <p class="section-subtitle">Filmes populares na semana</p>
+        <div class="popular-carousel-container swiper-container">
+            <div class="swiper-wrapper">
+                <div th:each="filme : ${filmesPopulares}" class="swiper-slide movie-item-slide">
+                    <a th:href="@{/filmes/{id}(id=${filme.id})}">
+                        <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+                             th:alt="${filme.nome}" class="movie-poster"/>
+                    </a>
+                </div>
+            </div>
+            <div class="swiper-button-next popular-nav-next"></div>
+            <div class="swiper-button-prev popular-nav-prev"></div>
+        </div>
+    </section>
+
+    <section class="movie-carousel-section" sec:authorize="isAuthenticated()">
+        <h2>Favoritos</h2>
+        <a th:href="@{/meus-favoritos}" class="ver-tudo-link">Ver Tudo &rarr;</a> </div>
+        <p class="section-subtitle">Seus filmes favoritos</p>
+        <div class="favorites-carousel-container swiper-container">
+            <div class="swiper-wrapper">
+                <div th:each="filme : ${filmesFavoritos}" class="swiper-slide movie-item-slide">
+                    <a th:href="@{/filmes/{id}(id=${filme.id})}">
+                        <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+                             th:alt="${filme.nome}" class="movie-poster"/>
+                    </a>
+                </div>
+            </div>
+            <div class="swiper-button-next fav-nav-next"></div>
+            <div class="swiper-button-prev fav-nav-prev"></div>
+        </div>
+    </section>
+
+</main>
+
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script th:src="@{/js/carousel-init.js}"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<header class="top-bar" th:fragment="navbar">
+  <div class="top-bar-content">
+    <div class="logo-area">
+      <a th:href="@{/home}">
+        <img th:src="@{/images/starmovie-logo.png}" alt="StarMovie Logo" class="navbar-logo"/>
+      </a>
+    </div>
+    <div class="search-area">
+      <form th:action="@{/buscar}" method="get" class="search-form">
+        <input type="text" name="query" placeholder="Busque por um filme..." class="search-input" required/>
+        <button type="submit" class="search-button">
+          <i class="fas fa-search"></i>
+        </button>
+      </form>
+    </div>
+    <nav class="navigation-area">
+      <ul>
+        <li><a th:href="@{/filmes}">Filmes</a></li>
+        <li sec:authorize="isAuthenticated()"><a th:href="@{/perfil}">Perfil</a></li>
+        <li sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+        <li sec:authorize="isAuthenticated()">
+          <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit" class="logout-button">Sair</button>
+          </form>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+</body>
+</html>

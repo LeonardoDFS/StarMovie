@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Catálogo de Filmes - StarMovie</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/home-style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<header th:replace="~{fragments/navbar :: navbar}"></header>
+
+<main class="main-content">
+
+    <h1>Catálogo de Filmes</h1>
+
+    <div class="filter-sort-controls" style="margin-bottom: 30px; text-align: center; display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+
+        <div class="filter-group">
+            <form th:action="@{${baseUrl}}" method="get" id="genreFilterForm" style="display: inline-flex; align-items: center; gap: 8px;">
+                <input type="hidden" name="pageNo" value="1">
+                <input type="hidden" name="pageSize" th:value="${pageSize ?: 20}">
+                <input type="hidden" name="sortField" th:value="${sortField ?: 'nome'}">
+                <input type="hidden" name="sortDir" th:value="${sortDir ?: 'asc'}">
+
+                <label for="generoId" style="margin-right: 5px; color: #ccc;">Gênero:</label>
+                <select name="generoId" id="generoId" onchange="document.getElementById('genreFilterForm').submit()" style="padding: 8px 10px; border-radius: 4px; border: 1px solid #555; background-color: #333; color: #eee;">
+                    <option value="" style="background-color: #333; color: #eee;">Todos</option> <option th:each="genero : ${todosOsGeneros}"
+                                                                                                         th:value="${genero.id}"
+                                                                                                         th:text="${genero.nome}"
+                                                                                                         th:selected="${selectedGeneroId != null && genero.id == selectedGeneroId}"
+                                                                                                         style="background-color: #333; color: #eee;"></option>
+                </select>
+            </form>
+        </div>
+
+        <div class="sort-group" style="color: #ccc;">
+            <span style="margin-right: 5px;">Ordenar por:</span>
+            <a th:href="@{${baseUrl}(pageNo=${currentPage ?: 1}, size=${pageSize ?: 20}, sortField='nome', sortDir=${sortField == 'nome' ? reverseSortDir : 'asc'}, generoId=${selectedGeneroId})}"
+               class="sort-link" th:classappend="${sortField == 'nome'} ? 'active'">Nome</a> |
+            <a th:href="@{${baseUrl}(pageNo=${currentPage ?: 1}, size=${pageSize ?: 20}, sortField='ano', sortDir=${sortField == 'ano' ? reverseSortDir : 'asc'}, generoId=${selectedGeneroId})}"
+               class="sort-link" th:classappend="${sortField == 'ano'} ? 'active'">Ano</a> |
+            <a th:href="@{${baseUrl}(pageNo=${currentPage ?: 1}, size=${pageSize ?: 20}, sortField='popularidade', sortDir=${sortField == 'popularidade' ? reverseSortDir : 'desc'}, generoId=${selectedGeneroId})}"
+               class="sort-link" th:classappend="${sortField == 'popularidade'} ? 'active'">Popularidade</a>
+        </div>
+    </div>
+    <div th:if="${not #lists.isEmpty(listFilmes)}">
+        <div class="search-results-grid"> <div class="movie-item" th:each="filme : ${listFilmes}">
+            <a th:href="@{/filmes/{id}(id=${filme.id})}">
+                <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+                     th:alt="${filme.nome}" class="movie-poster"/>
+            </a>
+        </div>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(listFilmes)}">
+        <p class="no-results-message">Nenhum filme encontrado no catálogo para os filtros aplicados.</p>
+    </div>
+
+    <div th:if="${totalPages > 1}" class="pagination-controls">
+
+        <a th:if="${currentPage > 1}" th:href="@{${baseUrl}(pageNo=1, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir}, generoId=${selectedGeneroId})}">Primeira</a>
+        <span th:unless="${currentPage > 1}" class="disabled">Primeira</span>
+
+        <a th:if="${currentPage > 1}" th:href="@{${baseUrl}(pageNo=${currentPage - 1}, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir}, generoId=${selectedGeneroId})}">Anterior</a>
+        <span th:unless="${currentPage > 1}" class="disabled">Anterior</span>
+
+        <th:block th:each="i: ${#numbers.sequence(1, totalPages)}">
+            <a th:if="${i == 1
+                      || i == totalPages
+                      || (i >= currentPage - 2 && i <= currentPage + 2)}"
+               th:href="@{${baseUrl}(pageNo=${i}, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir}, generoId=${selectedGeneroId})}"
+               th:classappend="${i == currentPage} ? 'active'"
+               th:text="${i}"></a>
+            <span th:if="${i == 1 && currentPage - 2 > 2}">...</span>
+            <span th:if="${i == totalPages -1 && currentPage + 2 < totalPages -1}">...</span>
+        </th:block>
+
+        <a th:if="${currentPage < totalPages}" th:href="@{${baseUrl}(pageNo=${currentPage + 1}, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir}, generoId=${selectedGeneroId})}">Próxima</a>
+        <span th:unless="${currentPage < totalPages}" class="disabled">Próxima</span>
+
+        <a th:if="${currentPage < totalPages}" th:href="@{${baseUrl}(pageNo=${totalPages}, size=${pageSize ?: 20}, sortField=${sortField}, sortDir=${sortDir}, generoId=${selectedGeneroId})}">Última</a>
+        <span th:unless="${currentPage < totalPages}" class="disabled">Última</span>
+    </div>
+
+</main>
+
+</body>
+</html>

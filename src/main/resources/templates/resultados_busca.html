@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="'Resultados para: ' + ${query} + ' - StarMovie'">Resultados da Busca - StarMovie</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/home-style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<header th:replace="~{fragments/navbar :: navbar}"></header>
+
+<main class="main-content">
+
+    <h1 class="search-title">Resultados para: "<span th:text="${query}">Termo Buscado</span>"</h1>
+
+    <div th:if="${not #lists.isEmpty(resultadosBusca)}">
+        <div class="search-results-grid">
+            <div class="movie-item" th:each="filme : ${resultadosBusca}">
+                <a th:href="@{/filmes/{id}(id=${filme.id})}">
+                    <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+                         alt="Poster do Filme"  class="movie-poster"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${#lists.isEmpty(resultadosBusca)}">
+        <p class="no-results-message">Nenhum filme encontrado para "<span th:text="${query}"></span>". Tente buscar por outro termo.</p>
+    </div>
+
+</main>
+
+</body>
+</html>

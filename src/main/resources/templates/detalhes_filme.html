@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title th:text="${filme.nome} + ' - Detalhes - StarMovie'">Detalhes do Filme - StarMovie</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/home-style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<header th:replace="~{fragments/navbar :: navbar}"></header>
+
+<div class="detail-backdrop"
+     th:style="${filme.caminhoFundo != null ? 'background-image: url(https://image.tmdb.org/t/p/original' + filme.caminhoFundo + ');' : 'background-color: #222;'}">
+</div>
+
+<main class="main-content detail-content-overlay">
+
+    <div class="detail-poster">
+        <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+             th:alt="${filme.nome}" class="movie-poster"/>
+    </div>
+
+    <div class="detail-info">
+
+        <div class="title-year">
+            <h1 th:text="${filme.nome}">Nome do Filme</h1>
+            <span class="year" th:if="${filme.ano}" th:text="'(' + ${filme.ano} + ')'"> (Ano)</span>
+        </div>
+
+        <div class="metadata-line">
+            <span>&nbsp;</span> </div>
+
+
+        <div class="genre-tags" th:if="${not #lists.isEmpty(filme.generos)}">
+            <span th:each="gen : ${filme.generos}" th:text="${gen.nome}">Gênero</span>
+        </div>
+
+        <div class="user-interactions" sec:authorize="isAuthenticated()">
+            <div>
+                <form th:if="${isFavorito}" th:action="@{/filmes/{filmeId}/desfavoritar(filmeId=${filme.id})}" method="post" style="display: inline;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="fav-button is-favorite">
+                        <i class="fas fa-check"></i> Na sua lista
+                    </button>
+                </form>
+                <form th:unless="${isFavorito}" th:action="@{/filmes/{filmeId}/favoritar(filmeId=${filme.id})}" method="post" style="display: inline;">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <button type="submit" class="fav-button">
+                        <i class="fas fa-plus"></i> Adicionar à lista
+                    </button>
+                </form>
+            </div>
+
+            <div title="Sua Avaliação">
+                <form id="ratingForm" th:action="@{/filmes/{filmeId}/avaliar(filmeId=${filme.id})}" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" name="nota" id="notaInput" th:value="${usuarioRating}" th:attr="data-saved-rating=${usuarioRating}"/>
+
+                    <span class="rating-stars">
+                 <i th:each="i : ${#numbers.sequence(1, 5)}"
+                    th:id="'star' + ${i}"
+                    class="fa-star"
+                    th:classappend="${i <= usuarioRating} ? 'fas active' : 'far'"
+                    th:attr="data-value=${i}"
+                    th:onclick="'selecionarNota(' + ${i} + ')'"
+                    th:onmouseover="'highlightStars(' + ${i} + ')'"
+                    onmouseout="resetStars()"></i>
+                    </span>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}" style="margin-top: 15px; padding: 10px; border-radius: 5px; background-color: #d4edda; border-color: #c3e6cb; color: #155724;"></div>
+        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}" style="margin-top: 15px; padding: 10px; border-radius: 5px; background-color: #f8d7da; border-color: #f5c6cb; color: #721c24;"></div>
+
+        <div class="detail-section" th:if="${filme.sinopse != null and !filme.sinopse.isEmpty()}">
+            <h3>Sinopse</h3>
+            <p th:text="${filme.sinopse}">Sinopse do filme...</p>
+        </div>
+
+        <div class="detail-section" th:if="${filme.diretor != null and !filme.diretor.isEmpty()}">
+            <h3>Direção</h3>
+            <p th:text="${filme.diretor}">Nome do Diretor</p>
+        </div>
+
+    </div> </main>
+        <script th:src="@{/js/detalhes-interaction.js}"></script>
+    </body>
+</html>
