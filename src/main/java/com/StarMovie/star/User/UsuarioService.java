@@ -27,7 +27,7 @@ public class UsuarioService {
         }
 
         // 3. HASH a senha ANTES de salvar
-        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuario.setSenha(passwordEncoder.encode(usuario.getPassword()));
 
         // 4. Salvar o usuário
         usuarioRepository.save(usuario);

@@ -72,4 +72,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // --- INICIALIZAÇÃO DO CARROSSEL DE SUGESTÕES ---
+    const sugestoesContainer = document.querySelector('.sugestoes-carousel-container');
+    if (sugestoesContainer) {
+        const sugestoesSwiper = new Swiper(sugestoesContainer, {
+            ...movieCarouselOptions, // Reutiliza as opções comuns
+            navigation: {
+                nextEl: '.suggests-nav-next', // Botão 'próximo' específico
+                prevEl: '.suggests-nav-prev', // Botão 'anterior' específico
+            },
+        });
+    }
+
 });

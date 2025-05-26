@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/home-style.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
 </head>
 <body>
 
@@ -29,8 +30,11 @@
         </div>
 
         <div class="metadata-line">
-            <span>&nbsp;</span> </div>
-
+            <span th:if="${filme.duracaoFormatada}" th:text="${filme.duracaoFormatada}" style="margin-right: 15px;">Dur.</span> <span th:if="${filme.classificacaoIndicativa}"
+                                                                                                                                      class="rating-icon"
+                                                                                                                                      th:text="${filme.classificacaoIndicativa}">CI</span>
+            <span th:unless="${(filme.duracaoFormatada != null and !filme.duracaoFormatada.isEmpty()) or (filme.classificacaoIndicativa != null and !filme.classificacaoIndicativa.isEmpty())}">&nbsp;</span>
+        </div>
 
         <div class="genre-tags" th:if="${not #lists.isEmpty(filme.generos)}">
             <span th:each="gen : ${filme.generos}" th:text="${gen.nome}">Gênero</span>
@@ -51,21 +55,19 @@
                     </button>
                 </form>
             </div>
-
             <div title="Sua Avaliação">
                 <form id="ratingForm" th:action="@{/filmes/{filmeId}/avaliar(filmeId=${filme.id})}" method="post">
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     <input type="hidden" name="nota" id="notaInput" th:value="${usuarioRating}" th:attr="data-saved-rating=${usuarioRating}"/>
-
                     <span class="rating-stars">
-                 <i th:each="i : ${#numbers.sequence(1, 5)}"
-                    th:id="'star' + ${i}"
-                    class="fa-star"
-                    th:classappend="${i <= usuarioRating} ? 'fas active' : 'far'"
-                    th:attr="data-value=${i}"
-                    th:onclick="'selecionarNota(' + ${i} + ')'"
-                    th:onmouseover="'highlightStars(' + ${i} + ')'"
-                    onmouseout="resetStars()"></i>
+                         <i th:each="i : ${#numbers.sequence(1, 5)}"
+                            th:id="'star' + ${i}"
+                            class="fa-star"
+                            th:classappend="${i <= usuarioRating} ? 'fas active' : 'far'"
+                            th:attr="data-value=${i}"
+                            th:onclick="'selecionarNota(' + ${i} + ')'"
+                            th:onmouseover="'highlightStars(' + ${i} + ')'"
+                            onmouseout="resetStars()"></i>
                     </span>
                 </form>
             </div>
@@ -84,7 +86,19 @@
             <p th:text="${filme.diretor}">Nome do Diretor</p>
         </div>
 
+        <div class="detail-section" th:if="${filme.elencoPrincipal != null and !filme.elencoPrincipal.isEmpty()}">
+            <h3>Elenco Principal</h3>
+            <p th:text="${filme.elencoPrincipal}">Ator 1, Ator 2...</p>
+        </div>
+
+        <div sec:authorize="hasRole('ADMIN')" style="margin-top:10px;">
+            <form th:action="@{/admin/filmes/{id}/deletar(id=${filme.id})}" method="post" onsubmit="return confirm('Tem certeza que deseja deletar este filme? Esta ação não pode ser desfeita.');">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" class="fav-button" style="background-color: #e5d309;">Deletar Filme (Admin)</button>
+            </form>
+        </div>
+
     </div> </main>
-        <script th:src="@{/js/detalhes-interaction.js}"></script>
-    </body>
+
+<script th:src="@{/js/detalhes-interaction.js}"></script> </body>
 </html>

@@ -5,6 +5,7 @@ import jakarta.persistence.*; // Use javax.persistence.* se estiver no Spring Bo
 import java.time.LocalDate; // Para o tipo DATE do SQL
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Entity // Marca esta classe como uma entidade JPA
 @Table(name = "filme") // Mapeia para a tabela "filme" no banco de dados
@@ -225,5 +226,23 @@ public class Filme {
         this.dataLancamento = dataLancamento;
     }
 
-    // Você pode adicionar @ToString, @EqualsAndHashCode se desejar (requer cuidado com relacionamentos)
+    @Transient // Indica ao JPA para não tentar mapear este m3todo para uma coluna no banco
+    public String getDuracaoFormatada() {
+        if (this.duracao == null || this.duracao <= 0) {
+            return null; // Ou uma string vazia "" se preferir não mostrar nada
+        }
+        long hours = TimeUnit.MINUTES.toHours(this.duracao.longValue()); // Usa longValue() para o método
+        long remainMinutes = this.duracao.longValue() - TimeUnit.HOURS.toMinutes(hours);
+
+        if (hours == 0 && remainMinutes > 0) {
+            return String.format("%dm", remainMinutes);
+        } else if (remainMinutes == 0 && hours > 0) {
+            return String.format("%dh", hours);
+        } else if (hours > 0 && remainMinutes > 0) {
+            return String.format("%dh %dm", hours, remainMinutes);
+        }
+        return null; // Caso duracao seja 0 ou negativo (após o primeiro if já tratar null/<=0)
+    }
+
+    // Pode adicionar @ToString, @EqualsAndHashCode se desejar (requer cuidado com relacionamentos)!!!!
 }

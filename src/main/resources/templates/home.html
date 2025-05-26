@@ -6,6 +6,8 @@
     <link rel="stylesheet" th:href="@{/css/home-style.css}">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+</head>
 </head>
 <body>
 
@@ -66,6 +68,25 @@
             </div>
             <div class="swiper-button-next fav-nav-next"></div>
             <div class="swiper-button-prev fav-nav-prev"></div>
+        </div>
+    </section>
+
+    <section class="movie-carousel-section" th:if="${not #lists.isEmpty(filmesSugeridos)}">
+        <h2>Sugestões para Você</h2>
+        <p class="section-subtitle" th:if="${usuarioLogado}">Filmes que você pode gostar</p>
+        <p class="section-subtitle" th:unless="${usuarioLogado}">Filmes populares em destaque</p>
+
+        <div class="sugestoes-carousel-container swiper-container">
+            <div class="swiper-wrapper">
+                <div th:each="filme : ${filmesSugeridos}" class="swiper-slide movie-item-slide">
+                    <a th:href="@{/filmes/{id}(id=${filme.id})}">
+                        <img th:src="${filme.posterPath != null ? 'https://image.tmdb.org/t/p/w500' + filme.posterPath : '/images/placeholder-poster.png'}"
+                             th:alt="${filme.nome}" class="movie-poster"/>
+                    </a>
+                </div>
+            </div>
+            <div class="swiper-button-next suggests-nav-next"></div>
+            <div class="swiper-button-prev suggests-nav-prev"></div>
         </div>
     </section>
 

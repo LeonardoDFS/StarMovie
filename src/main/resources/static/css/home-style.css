@@ -234,7 +234,7 @@ a:hover {
 }
 
 
-/* ==================== Carrosséis de Filmes (Populares/Favoritos) ==================== */
+/* ==================== Carrosséis de Filmes (Populares/Favoritos/Sugestão) ==================== */
 .movie-carousel-section {
     margin-top: 40px; /* *** ADICIONADO ESPAÇO ACIMA *** */
     margin-bottom: 60px; /* *** AUMENTADO ESPAÇO ABAIXO *** */
@@ -252,7 +252,7 @@ a:hover {
 }
 
 /* Adiciona um pouco de padding para os botões não colarem nas bordas */
-.popular-carousel-container, .favorites-carousel-container {
+.popular-carousel-container, .favorites-carousel-container, .sugestoes-carousel-container{
     width: 100%;
     overflow: hidden;
     padding: 10px 45px; /* Aumenta padding lateral para dar espaço às setas */
@@ -282,14 +282,14 @@ a:hover {
 
 /* Estilo botões Swiper Populares/Favoritos */
 /* Posiciona os botões fora do container principal dos slides */
-.popular-nav-prev, .fav-nav-prev {
+.popular-nav-prev, .fav-nav-prev, .suggests-nav-prev {
     left: 5px !important; /* Posição da seta esquerda */
 }
-.popular-nav-next, .fav-nav-next {
+.popular-nav-next, .fav-nav-next, .suggests-nav-next{
     right: 5px !important; /* Posição da seta direita */
 }
 
-.popular-nav-prev, .popular-nav-next, .fav-nav-prev, .fav-nav-next {
+.popular-nav-prev, .popular-nav-next, .fav-nav-prev, .fav-nav-next, .suggests-nav-prev, .suggests-nav-next {
     color: #e0e0e0 !important;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 50%;
@@ -303,7 +303,7 @@ a:hover {
     opacity: 0;
 }
 
-.popular-nav-prev::after, .popular-nav-next::after, .fav-nav-prev::after, .fav-nav-next::after {
+.popular-nav-prev::after, .popular-nav-next::after, .fav-nav-prev::after, .fav-nav-next::after, .suggests-nav-prev::after, .suggests-nav-next::after {
     font-size: 16px !important;
     font-weight: bold;
 }
@@ -311,11 +311,13 @@ a:hover {
 .movie-carousel-section:hover .popular-nav-prev,
 .movie-carousel-section:hover .popular-nav-next,
 .movie-carousel-section:hover .fav-nav-prev,
-.movie-carousel-section:hover .fav-nav-next {
+.movie-carousel-section:hover .fav-nav-next,
+.movie-carousel-section:hover .suggests-nav-prev,
+.movie-carousel-section:hover .suggests-nav-next{
     opacity: 1; /* Mostra setas no hover */
 }
 
-.popular-nav-prev:hover, .popular-nav-next:hover, .fav-nav-prev:hover, .fav-nav-next:hover {
+.popular-nav-prev:hover, .popular-nav-next:hover, .fav-nav-prev:hover, .fav-nav-next:hover, .suggests-nav-prev:hover, .suggests-nav-next:hover {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
@@ -385,71 +387,7 @@ a:hover {
     font-weight: bold;
 }
 
-/* ==================== Página de Resultados da Busca ==================== */
 
-.search-title {
-    color: #fff;
-    font-size: 1.8em;
-    margin-bottom: 30px;
-    border-bottom: 1px solid #444; /* Linha separadora opcional */
-    padding-bottom: 10px;
-}
-
-.search-title span {
-    font-style: italic; /* Destaca o termo buscado */
-}
-
-.search-results-grid {
-    display: grid;
-    /* Cria colunas responsivas:
-       - Tenta preencher com colunas de no mínimo 160px.
-       - Cada coluna ocupa uma fração igual do espaço (1fr).
-       - Adapta o número de colunas à largura da tela. */
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 25px; /* Espaço entre os itens da grade */
-    margin-top: 20px;
-}
-
-.search-results-grid .movie-item a {
-    display: block; /* Garante que o link ocupe o espaço */
-    text-align: center; /* Centraliza o título se adicionado */
-    transition: transform 0.2s ease-in-out; /* Efeito suave */
-}
-.search-results-grid .movie-item a:hover {
-    transform: scale(1.04); /* Leve aumento no hover */
-}
-
-
-/* Reutiliza a classe .movie-poster, mas garante que ela se adapte à grade */
-.search-results-grid .movie-poster {
-    width: 100%; /* Faz a imagem ocupar toda a largura do item da grade */
-    height: auto;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Sombra um pouco mais forte */
-}
-
-/* Estilo opcional para título abaixo do poster na grade */
-.movie-title-grid {
-    color: #ccc;
-    font-size: 0.9em;
-    margin-top: 8px;
-    /* Evita que títulos muito longos quebrem o layout */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.no-results-message {
-    color: #aaa;
-    font-size: 1.1em;
-    text-align: center;
-    margin-top: 50px;
-}
-
-.no-results-message span {
-    font-style: italic;
-    font-weight: bold;
-}
 
 /* ==================== PÁGINA DE DETALHES DO FILME ==================== */
 
@@ -685,14 +623,14 @@ a:hover {
 }
 
 .filter-group select {
-    /* Os estilos inline que você colocou no HTML:
+    /* Os estilos inline que colocou no HTML:
     padding: 8px 10px;
     border-radius: 4px;
     border: 1px solid #555;
     background-color: #333;
     color: #eee;
     */
-    /* Você pode mover esses estilos para cá */
+    /* pode mover esses estilos para cá */
 }
 
 .sort-link {
@@ -715,5 +653,29 @@ a:hover {
     text-decoration-color: #e5d309; /* Exemplo de destaque */
     text-underline-offset: 3px; /* Afasta um pouco o sublinhado */
 }
+.sugestoes-nav-prev, .sugestoes-nav-next {
+    color: #e0e0e0 !important;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    width: 35px !important;
+    height: 35px !important;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    top: 50% !important;
+    transform: translateY(-50%);
+    opacity: 0; /* Esconde por padrão */
+}
+.sugestoes-nav-prev::after, .sugestoes-nav-next::after {
+    font-size: 16px !important;
+    font-weight: bold;
+}
+/* Mostra setas no hover da seção */
+.movie-carousel-section:hover .sugestoes-nav-prev,
+.movie-carousel-section:hover .sugestoes-nav-next {
+    opacity: 1;
+}
+.sugestoes-nav-prev:hover, .sugestoes-nav-next:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
 
 /* (Final do arquivo home-style.css) */

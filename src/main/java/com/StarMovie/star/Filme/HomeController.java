@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Collections;
 import java.util.List;
 import java.util.Set; // ListaService retorna um Set<Filme> para favoritos
 
@@ -78,6 +80,15 @@ public class HomeController {
         System.out.println("----------------------------------------------------");
         System.out.println("Carrossel Principal Size: " + (filmesCarrosselPrincipal != null ? filmesCarrosselPrincipal.size() : "null"));
         System.out.println("Favoritos Reais Size: " + (filmesFavoritos != null ? filmesFavoritos.size() : "null")); // Debug favoritos
+
+        List<Filme> filmesSugeridos = Collections.emptyList(); // Inicializa
+        if (usuarioId != null) { // Só busca sugestões se o usuário estiver logado
+            filmesSugeridos = filmeService.getSugestoesParaUsuario(usuarioId, 10); // Pega 10 sugestões
+        } else {
+            // Para usuários não logados, pode pegar os mais populares gerais
+            filmesSugeridos = filmeService.getFilmesPopulares(10); // Reutiliza getFilmesPopulares
+        }
+        model.addAttribute("filmesSugeridos", filmesSugeridos);
 
         // 6. Retorna o nome do template HTML
         return "home";

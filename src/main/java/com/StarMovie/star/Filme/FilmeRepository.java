@@ -24,7 +24,7 @@ public interface FilmeRepository extends JpaRepository<Filme, Integer> {
     Page<Filme> findAllNonAdult(Pageable pageable);
 
     // NOVA QUERY para buscar por gênero E não adulto
-// "g MEMBER OF f.generos" verifica se o gênero com ID :generoId está na coleção f.generos
+    // "g MEMBER OF f.generos" verifica se o gênero com ID :generoId está na coleção f.generos
     @Query("SELECT f FROM Filme f JOIN f.generos g WHERE f.isAdult = false AND g.id = :generoId")
     Page<Filme> findFiltradoPorGeneroEAdulto(@Param("generoId") Integer generoId,
                                              @Param("isAdult") boolean isAdult, // Parâmetro isAdult ainda necessário
@@ -37,4 +37,26 @@ public interface FilmeRepository extends JpaRepository<Filme, Integer> {
 
     List<Filme> findByNomeContainingIgnoreCase(String termo, Pageable pageable);
 
+    // Query para buscar sugestões baseadas nos gêneros preferidos,
+    // excluindo filmes já favoritados ou avaliados pelo usuário.
+    @Query("SELECT DISTINCT f FROM Filme f JOIN f.generos g WHERE f.isAdult = false " +
+            "AND g.id IN :listaDeGenerosIds " +
+            "AND f.id NOT IN (SELECT f_fav.id FROM Usuario u JOIN u.listas l JOIN l.filmes f_fav WHERE u.id = :usuarioId AND lower(l.nome) = 'favoritos') " +
+            "AND f.id NOT IN (SELECT nf.filme.id FROM NotaFil nf WHERE nf.usuarioId = :usuarioId) " +
+            "ORDER BY f.popularidade DESC, f.id") // Adiciona f.id para desempate estável
+    List<Filme> findSugestoesPorGenerosParaUsuario(
+            @Param("usuarioId") Integer usuarioId,
+            @Param("listaDeGenerosIds") List<Integer> listaDeGenerosIds,
+            Pageable pageable); // Pageable para limitar o número de sugestões
+
+    // Query de Fallback: Populares que o usuário não interagiu (não favoritou nem avaliou)
+    @Query("SELECT f FROM Filme f WHERE f.isAdult = false " +
+            "AND f.id NOT IN (SELECT f_fav.id FROM Usuario u JOIN u.listas l JOIN l.filmes f_fav WHERE u.id = :usuarioId AND lower(l.nome) = 'favoritos') " +
+            "AND f.id NOT IN (SELECT nf.filme.id FROM NotaFil nf WHERE nf.usuarioId = :usuarioId) " +
+            "ORDER BY f.popularidade DESC, f.id")
+    List<Filme> findPopularesNaoInteragidos(
+            @Param("usuarioId") Integer usuarioId,
+            Pageable pageable);
 }
+
+

@@ -29,23 +29,32 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/register/**", "/process_register", "/css/**", "/js/**", "/images/**").permitAll() // Permite acesso ao registro e recursos estáticos
-                        .requestMatchers("/login").permitAll() // Permite acesso à página de login
-                        .anyRequest().authenticated() // Exige autenticação para qualquer outra requisição
+                        // Permissões públicas
+                        .requestMatchers("/", "/home", "/login", "/register/**", "/process_register",
+                                "/css/**", "/js/**", "/images/**",
+                                "/filmes", "/filmes/{id}", "/buscar", "/webjars/**").permitAll()
+
+                        // Permissões para usuários logados (USER ou ADMIN)
+                        .requestMatchers("/perfil", "/meus-favoritos", "/minhas-avaliacoes",
+                                "/filmes/{filmeId}/favoritar", "/filmes/{filmeId}/desfavoritar",
+                                "/filmes/{filmeId}/avaliar").authenticated() // Ou .hasAnyRole("USER", "ADMIN")
+
+                        // Permissões SOMENTE PARA ADMIN
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // Qualquer URL começando com /admin exige ROLE_ADMIN
+
+                        .anyRequest().authenticated() // Todas as outras requisições exigem autenticação
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // Define a página de login customizada
-                        .loginProcessingUrl("/login") // URL que o Spring Security processa o login (pode ser a mesma)
-                        .defaultSuccessUrl("/home", true) // Redireciona para /home após login sucesso
-                        .permitAll() // Permite acesso a todos para a URL de processamento do login
-                )
-                .logout(logout -> logout
-                        .logoutUrl("/logout") // URL para fazer logout
-                        .logoutSuccessUrl("/login?logout") // Redireciona após logout
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/home", true)
                         .permitAll()
                 )
-                .userDetailsService(userDetailsService); // Informa ao Spring Security como carregar usuários
-
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login?logout")
+                        .permitAll()
+                )
+                .userDetailsService(userDetailsService);
         return http.build();
     }
 }
