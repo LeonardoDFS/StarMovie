@@ -59,7 +59,7 @@ mvn javafx:run
 ```
 StarMovie/
 │
-├── frontend/           # JavaFX interface
+├── frontend/           # SpringBoot interface
 ├── backend/            # API de filmes
 ├── database/           # Scripts SQL / modelo ER
 ├── README.md
@@ -68,14 +68,7 @@ StarMovie/
 
 ---
 
-## 📌 TODOs
 
-- [ ] Conexão completa com API de filmes
-- [ ] Sistema de autenticação
-- [ ] Carregamento dinâmico dos carrosséis
-- [ ] Responsividade e estilização final
-
----
 
 ## 👨‍💻 Autor
 
