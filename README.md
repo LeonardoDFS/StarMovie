@@ -36,19 +36,74 @@
 - Git
 - PostgreSQL ou MySQL (dependendo da implementação)
 
-### 🧪 Passos iniciais
+---
+
+## 🚀 Como Executar o Projeto
+
+### 🔧 Requisitos
+
+* Java JDK 17 ou superior
+* Apache Maven 3.6+
+* MySQL Server 8.0+
+* Python 3.x (para popular o banco de dados)
+* Git
+
+### 🧪 Passos para Configuração
+
+**1. Clone o Repositório**
+```bash
+# Clone este repositório para a sua máquina local
+git clone [https://github.com/seu-usuario/StarMovie.git](https://github.com/seu-usuario/StarMovie.git)
+cd StarMovie
+```
+
+**2. Configure o Banco de Dados MySQL**
+
+O projeto precisa de um banco de dados MySQL para funcionar. Os scripts para criar e popular o banco estão na pasta `/database`.
 
 ```bash
-# Clone o repositório
-git clone https://github.com/seu-usuario/StarMovie.git
-cd StarMovie
+# Navegue até a pasta de scripts do banco de dados
+cd database
 
-# Compile o projeto (se estiver usando Maven)
-mvn clean install
+# Execute o script de criação da estrutura (tabelas e usuário)
+# Você precisará da sua senha de root do MySQL.
+mysql -u root -p < setup.sql
 
-# Execute a aplicação JavaFX
-mvn javafx:run
+# (Opcional, mas recomendado) Execute o script Python para popular o banco com filmes.
+# Pode ser necessário instalar as dependências do script primeiro (ex: pip install requests mysql-connector-python)
+python popular_db_starmovie.py
 ```
+
+**3. Configure as Variáveis de Ambiente da Aplicação**
+
+A aplicação Spring Boot precisa saber como se conectar ao banco de dados que você acabou de criar.
+
+* Abra o arquivo: `src/main/resources/application.properties`
+* Verifique se as credenciais correspondem ao que foi definido no `setup.sql` ou à sua configuração local.
+
+```properties
+# Exemplo de configuração no application.properties
+spring.datasource.url=jdbc:mysql://localhost:3306/star_movie_final
+spring.datasource.username=star_platinum
+spring.datasource.password=20103050
+spring.jpa.hibernate.ddl-auto=update
+```
+
+**4. Execute a Aplicação**
+
+Com o banco de dados pronto e configurado, você pode iniciar a aplicação Spring Boot.
+
+```bash
+# Volte para a raiz do projeto
+cd ..
+
+# Use o Maven para compilar e executar o projeto
+mvn spring-boot:run
+```
+
+**5. Acesse a Aplicação**
+
+Pronto! Abra seu navegador e acesse: [http://localhost:8080](http://localhost:8080)
 
 > Configure as variáveis de ambiente e banco de dados conforme necessário no `application.properties` ou `.env`.
 
